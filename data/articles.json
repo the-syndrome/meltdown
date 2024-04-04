@@ -1,0 +1,9 @@
+[
+  {
+    "pathname": "/posts/2024-04-02-test",
+    "title": "test title",
+    "body": "test body (see ./data/articles.json)",
+    "created": "2024-04-04T10:03:22.032Z",
+    "icon": "test-tube"
+  }
+]
