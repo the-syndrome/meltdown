@@ -41,7 +41,7 @@ The `.env` file is configured to your needs.
 npm run dev
 ```
 
-Open <http://127.0.0.1:3000>
+Open <http://127.0.0.1:33765>
 
 ## Guides
 
