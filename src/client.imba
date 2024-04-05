@@ -107,7 +107,7 @@ export tag SiteClient
 			#top-inner d:flex;align-items:center
 			nav-link p:0.6rem;transition:background-color 100ms
 			nav-link * td:none;c:cooler6
-			nav-link@hover bgc:rgba(238, 130, 238, 0.16)
+			nav-link *@hover c:cooler4
 		#site-main, #top-inner, #site-bottom max-width: 1100px;m:auto
 		#site-main mt:1rem
 		#site-bottom

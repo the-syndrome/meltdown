@@ -1,11 +1,10 @@
 ---
 title: Components
---
+---
 
 ## nav-link
 
-The `<nav-link>` component allows instant navigation between pages without reloading
-the page.
+The `<nav-link>` component allows instant navigation between pages without reloading the page.
 
 ```imba
 <nav-link to="/path/to/page"> "Title"

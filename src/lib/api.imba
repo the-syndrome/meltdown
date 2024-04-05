@@ -1,7 +1,8 @@
 import superagent from "superagent"
 import urlJoin from "url-join"
-import { isNode, isBrowser } from "../lib/environment"
+import { isNode } from "../lib/environment"
 
+# example how to connect to self on server and to a path on browser
 const apiUrl = isNode ? "http://127.0.0.1:{process.env.PORT}" : "/"
 
 export def getArticle { pathname }
