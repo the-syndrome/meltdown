@@ -61,14 +61,16 @@ def markdownToHtml source
 	const { default: rehypeRaw } = await import "rehype-raw"
 	const { default: rehypeFormat } = await import "rehype-format"
 	const { default: rehypeStringify } = await import "rehype-stringify"
+	const { default: rehypeShiki } = await import "@shikijs/rehype"
 	# 1. parse markdown
 	# 2. and github-flavored markdown
 	# 3. transform to hast (HTML AST)
 	# 4. stringify to HTML
-	const { value, messages } = await unified()
+	const { value, messages } = await unified!
 		.use(remarkParse)
 		.use(remarkGfm)
 		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeShiki, { theme: "min-light" })
 		.use(rehypeRaw)
 		.use(rehypeFormat)
 		.use(rehypeStringify)

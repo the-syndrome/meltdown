@@ -5,25 +5,34 @@ import "./components/thin-icon"
 
 import isNil from "lodash/isNil"
 import isEmpty from "lodash/isEmpty"
+import isString from "lodash/isString"
 import isObject from "lodash/isObject"
 import isFunction from "lodash/isFunction"
+import get from "lodash/get"
 import qs from "qs"
 import routes from "../.tmp/routes"
 import { fromBinary } from "./lib/encoding"
 import { isNode } from "./lib/environment"
+import Error404 from "./pages/_Error404"
+import Error500 from "./pages/_Error500"
 
-const fallbackPage = { pattern: "*", load: do import("./pages/posts/[slug].imba") }
+const fallbackRoute = { pattern: "*", load: do import("./pages/posts/[slug].imba") }
 let initialScreen
 let initialLoaded = false
+const MELTDOWN_STATE1 = process.env.MELTDOWN_STATE1
+const MELTDOWN_STATE2 = process.env.MELTDOWN_STATE2
 
 if not isNode
 	const siteMain = document.getElementById "site-main"
 	if not isNil(siteMain) then initialScreen = siteMain.firstChild
 
 global css
-	body m:0;bgc:rgb(253, 248, 243)
-	h1, h2, h3 font-weight:normal
-	code,pre bgc:cooler1;p:0.1rem
+	html,body p:0;m:0
+	body bgc:rgb(253, 248, 243)
+	h1,h2,h3 font-weight:normal;m:0
+	p,td,li
+		code,pre d:inline-block;bgc:cooler1;p:0.1rem 0.2rem;ff:monospace
+	.shiki ff:monospace
 	table th,td p:0.2rem 0.3rem
 	.row, .col d:flex;gap:1rem
 	.row flex-direction:row
@@ -36,31 +45,40 @@ export tag SiteClient
 	prop params = {}
 	prop locals = {}
 	#
+	# after loading a screen and the data update the browser
+	#
+	def afterLoadScreen
+		const title = screen.title or locals.title or get(locals, "article.title")
+		if isString(title)
+			# browser title
+			document.title = window.unescape title
+		imba.commit!
+		# prevent double loading screens
+		initialLoaded = true
+	#
 	# dynamic load routes, data loading e.g. GET
 	#
 	def loadScreen route
 		try
-			const mod = await route.load()
+			const mod = await route.load!
 			screen = mod.default
 		catch loadScreenErr
 			const { message, stack } = loadScreenErr
 			console.error "error loading screen", route.pattern, message, stack
-			screen = ServerError500
+			screen = Error500
 		if isFunction(screen.GET) and initialLoaded
-			const req = { url: window.location.pathname }
-			const res = {locals:{}}
+			# async page
+			const req = { url: window.location.pathname, query, params }
+			const res = { locals:{} }
 			screen.GET req, res, do(err)
 				if not isNil err
 					const { message, stack } = err
 					console.error "error on screen GET", message, stack
-					if err.status is 404
-						screen = NotFound404
-					elif err.status >= 500
-						screen = ServerError500
 				locals = res.locals
-				imba.commit!
-		if not initialLoaded then initialLoaded = true
-		imba.commit!
+				afterLoadScreen!
+			return
+		# sync page
+		afterLoadScreen!
 	#
 	# route change event from imba router
 	#
@@ -76,26 +94,26 @@ export tag SiteClient
 				break
 		if not found
 			params = {}
-			loadScreen fallbackPage
+			loadScreen fallbackRoute
 	#
 	# state decode
 	#
-	def iNEmQLMasm
-		const iNEmQL = document.getElementById "iNEmQL"
-		const JW29a4 = document.getElementById "JW29a4"
-		const recis1 = iNEmQL.innerHTML
-		const recis2 = JW29a4.innerHTML.split("").reverse!.join("")
-		let recis = recis1 + recis2
-		recis = fromBinary recis
-		recis = JSON.parse recis
-		if not isEmpty(recis.query) then query = recis.query
-		if not isEmpty(recis.params) then params = recis.params
-		if not isEmpty(recis.locals) then locals = recis.locals
+	def loadState
+		const template1 = document.getElementById MELTDOWN_STATE1
+		const template2 = document.getElementById MELTDOWN_STATE2
+		const state1 = template1.innerHTML
+		const state2 = template2.innerHTML.split("").reverse!.join("")
+		let state = state1 + state2
+		state = fromBinary state
+		state = JSON.parse state
+		if not isEmpty(state.query) then query = state.query
+		if not isEmpty(state.params) then params = state.params
+		if not isEmpty(state.locals) then locals = state.locals
 	#
 	# when the client loads we synchronize state
 	#
 	def awaken
-		iNEmQLMasm!
+		loadState!
 		router.on "change", routerChange.bind(this)
 		routerChange!
 	css

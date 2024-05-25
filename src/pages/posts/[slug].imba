@@ -4,6 +4,7 @@ import set from "lodash/set"
 import dayjs from "dayjs"
 import { isNode } from "../../lib/environment"
 import { getArticle } from "../../lib/api"
+import Error404 from "../_Error404"
 
 const blankArticle = { title: "", body: "" }
 
@@ -12,17 +13,20 @@ export default tag Article
 	static def GET req, res, next
 		const pathname = req.url.replace /\/$/, ""
 		const article = await getArticle { pathname }
-		if not isNil article
+		if not isNil(article) and article isnt ""
 			set res, "locals.article", article
-			if not isNode then document.title = window.unescape(article.title)
+		else
+			res.status = 404
 		next!
 	get article
 		get locals, "article", blankArticle
 	<self>
-		<div>
+		if article.title is "" and article.body is ""
+			<Error404>
+		else
 			<h1>
 				if article.icon
-					<thin-icon name="fallout-shelter">
+					<thin-icon name=article.icon>
 					" "
 				article.title
 			<div innerHTML=article.body>

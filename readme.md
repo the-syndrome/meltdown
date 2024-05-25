@@ -47,14 +47,13 @@ Open <http://127.0.0.1:33765>
 
 + Setup meltdown <https://meltdown.dex.yachts/setup-meltdown>
 + Setup pocketbase <https://meltdown.dex.yachts/setup-pocketbase>
-
-## Screens and routes
-
-If you create new screens add them to `./src/routes.imba`.
++ Deploy Environment <https://meltdown.dex.yachts/deploy/environment>
++ Deploy with Docker <https://meltdown.dex.yachts/deploy/docker>
 
 ## Deploy
 
+In production, the default script is usually `npm start`, so we followed that convention too. It will build the page routes, transpile the server and client source, and then start the server. This flow will work for most. If you're app is huge, you may want to optimize it.
+
 ```sh
-npm run build
-npm run generate
+npm start # setup, build, and run server process
 ```

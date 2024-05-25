@@ -3,12 +3,12 @@
   "private": true,
   "dependencies": {
     "@phosphor-icons/web": "^2.1.1",
+    "@shikijs/rehype": "^1.4.0",
     "async": "^3.2.5",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
     "fast-glob": "^3.3.2",
     "front-matter": "^4.0.2",
-    "htmlnano": "^2.1.0",
     "imba": "^2.0.0-alpha.235",
     "lodash": "^4.17.21",
     "nodemon": "^3.1.0",
@@ -32,13 +32,12 @@
     "setup-dirs": "mkdir -p .tmp",
     "setup-routes": "imba run --loglevel error ./tools/build-routes.imba",
     "setup": "run-s -s 'setup-*'",
-    "export-content": "NODE_ENV=production imba run tools/export-content.imba",
+    "export-content": "imba run tools/export-content.imba",
     "dev-rebuild-routes": "nodemon -q -d 1 -C -w src/pages --ext imba,js,ts,md --exec 'npm run setup-routes' || true",
     "dev-server": "imba -w src/server.imba || true",
     "dev": "run-s -s setup && run-p -s 'dev-*' || true",
-    "build": "imba build src/server.imba",
     "generate": "echo 'todo gen'",
-    "preview": "node dist/server.js",
-    "prod": "npx pm2 start dist/server.js"
+    "build": "imba build src/server.imba",
+    "start": "run-s -s setup build && node dist/server.js"
   }
 }
