@@ -61,7 +61,8 @@ export tag SiteClient
 	def loadScreen route
 		try
 			const mod = await route.load!
-			screen = mod.default
+			# prevent double mounting the screen
+			if initialLoaded then screen = mod.default
 		catch loadScreenErr
 			const { message, stack } = loadScreenErr
 			console.error "error loading screen", route.pattern, message, stack
