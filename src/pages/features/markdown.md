@@ -5,7 +5,7 @@ With [Convention Routing](/features/convention-routing) any markdown files you p
 
 👈 At the left a table of contents is automatically generated. See [Front Matter](/features/front-matter) to enable, disable, or move to the right.
 
-## Blockquote
+## blockquote
 
 ```md
 > Alpha bravo charlie.

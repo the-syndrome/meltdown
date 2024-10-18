@@ -1,6 +1,7 @@
 .env
 .tmp
 .ssg
-node_modules
+.cache
 assets/search-index.json
+node_modules
 dist
