@@ -1,7 +1,8 @@
 import "../node_modules/@phosphor-icons/web/src/thin/style.css"
 import "./components/nav-link"
-import "./components/nav-button"
 import "./components/thin-icon"
+import "./components/text-copier"
+import NavSearch from "./components/NavSearch"
 
 import isNil from "lodash/isNil"
 import isEmpty from "lodash/isEmpty"
@@ -10,46 +11,91 @@ import isObject from "lodash/isObject"
 import isFunction from "lodash/isFunction"
 import get from "lodash/get"
 import qs from "qs"
-import routes from "../.tmp/routes"
+import routes from "../.tmp/meltdown-routes"
 import { fromBinary } from "./lib/encoding"
 import { isNode } from "./lib/environment"
 import Error404 from "./pages/_Error404"
 import Error500 from "./pages/_Error500"
+import { hasContent } from "./lib/strings"
 
-const fallbackRoute = { pattern: "*", load: do import("./pages/posts/[slug].imba") }
+const fallbackRoute = { pattern: "*", load: do import("./pages/_Error404") }
 let initialScreen
 let initialLoaded = false
 const MELTDOWN_STATE1 = process.env.MELTDOWN_STATE1
 const MELTDOWN_STATE2 = process.env.MELTDOWN_STATE2
 
 if not isNode
-	const siteMain = document.getElementById "site-main"
+	const siteMain = document.querySelector "main"
 	if not isNil(siteMain) then initialScreen = siteMain.firstChild
+
+global css @root
+	$font-family-ui: sans-serif, -apple-system, "BlinkMacSystemFont", "Segoe UI", roboto, oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue"
+	$font-family-code: monospace, consolas, monaco, "Andale Mono", "Ubuntu Mono"
+	$spacing-xs: 0.1rem
+	$spacing-sm: 0.3rem
+	$spacing-md: 0.6rem
+	$spacing-lg: 1rem
+	$color-bg: #FFFFFF
+	$color-fg: #111111
+	$color-sep: cooler3
+	$page-width: 1100px
 
 global css
 	html,body p:0;m:0
-	body bgc:rgb(253, 248, 243)
+	body
+		bgc:$color-bg
+		* ff: $font-family-ui; c: $color-fg
 	h1,h2,h3 font-weight:normal;m:0
+	.shiki,code,pre
+		ff: $font-family-code
+		fs: 0.9rem
+		* ff: $font-family-code; fs: 0.9rem
 	p,td,li
-		code,pre d:inline-block;bgc:cooler1;p:0.1rem 0.2rem;ff:monospace
-	.shiki ff:monospace
+		code,pre
+			d:inline-block
+			bgc:cooler1
+			p:0.1rem 0.2rem
+			border-radius:$spacing-xs
+			box-shadow: 1px 1px 1px cooler2
+	ol, ul
+		m: 0
+		li margin-bottom: $spacing-md
 	table th,td p:0.2rem 0.3rem
-	.row, .col d:flex;gap:1rem
+	.row, .col d:flex;gap:1rem;align-items:flex-start;justify-content:flex-start
 	.row flex-direction:row
 	.col flex-direction:column
 	.third flex: 0.3
+	.half flex: 0.5
+	.front-matter-page
+		d:flex
+		m: auto
+		w: $page-width
+		.fmp-toc
+			flex: 0.25
+			flex-direction: column
+		.fmp-content
+			flex-direction: column
+		.fmp-content-with-toc
+			flex: 0.75
+		.fmp-content-full
+			flex: 1
 
 export tag SiteClient
 	prop screen = initialScreen
 	prop query = {}
 	prop params = {}
 	prop locals = {}
+	NavSearch = null
 	#
 	# after loading a screen and the data update the browser
 	#
 	def afterLoadScreen
-		const title = screen.title or locals.title or get(locals, "article.title")
-		if isString(title)
+		const screenTitle = get screen, "title"
+		const metaTitle = get screen, "data.meta.title"
+		const localsTitle = get locals, "title"
+		const articleTitle = get locals, "article.title"
+		const title = screenTitle or metaTitle or localsTitle or articleTitle
+		if hasContent title
 			# browser title
 			document.title = window.unescape title
 		imba.commit!
@@ -119,35 +165,38 @@ export tag SiteClient
 		routerChange!
 	css
 		#site-top
-			# https://angrytools.com/gradient/
-			bg: linear-gradient(90deg, rgba(238, 130, 238, 0.1) 0%, rgba(0, 209, 255, 0.15) 100%)
-			border-bottom: 1px solid  rgba(0, 209, 255, 0.15)
-			pl: 0.6rem
-			#top-inner d:flex;align-items:center
-			nav-link p:0.6rem;transition:background-color 100ms
+			border-bottom: 1px solid $color-sep
+			p: $spacing-sm $spacing-md
+			d:flex
+			#top-left, #top-right d:flex;align-items:center
+			#top-right ml: auto
+			nav-link mr:$spacing-md;transition:background-color 100ms
 			nav-link * td:none;c:cooler6
 			nav-link *@hover c:cooler4
-		#site-main, #top-inner, #site-bottom max-width: 1100px;m:auto
-		#site-main mt:1rem
+		main mt:1rem
 		#site-bottom
 			mt:3rem
 			p:3rem
-			border-top: 1px solid  rgba(0, 209, 255, 0.15)
+			border-top: 1px solid $color-sep
 			nav-link * c:cooler6
 		.icon fs:25px
 	<self>
-		<div#site-top>
-			<div#top-inner>
+		<#site-top>
+			<#top-left>
 				<nav-link to="/"><div.icon><thin-icon name="fallout-shelter">
-				<nav-link to="/"> "Home"
+				<nav-link to="/"> "Meltdown"
+			<#top-right>
+				<nav-link to="/get-started"> "Get Started"
 				<nav-link to="/community"> "Community"
-		<div$main#site-main>
+				if process.env.MELTDOWN_SEARCH_INDEX is "true"
+					<NavSearch>
+		<main>
 			<{screen} query=query params=params locals=locals>
-		<div#site-bottom.row>
-			<div.col.third>
+		<#site-bottom.row>
+			<.col.third>
 				<nav-link to="/"> "Home"
 				<nav-link to="/community"> "Community"
-			<div.col.third>
-				"©️ your name 2024"
-			<div.col.third>
+			<.col.third>
+				"made by us"
+			<.col.third>
 				""

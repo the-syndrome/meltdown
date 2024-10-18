@@ -7,21 +7,27 @@ Demo, docs, and community → <https://meltdown.dex.yachts>
 
 Features
 
-+ Client rendering: SPA mode
-+ Server rendering: SSR mode
-+ Convention routing with `./src/pages`
-+ Instant and seemless navigation between pages
-+ Dynamic loading data from API
++ Instant navigation between pages
++ [Convention routing](https://meltdown.dex.yachts/features/convention-routing) with `./src/pages/*`
++ [Markdown pages](https://meltdown.dex.yachts/features/markdown-pages) e.g. `./src/pages/about.md` becomes `/about` page
++ [HTML pages](https://meltdown.dex.yachts/features/html-pages) e.g. `./src/pages/contact.html` becomes `/contact` page
++ [Dynamic pages](https://meltdown.dex.yachts/features/dynamic-pages) e.g. `./src/pages/blog.imba` becomes `/blog` page, supports `*.imba`, `*.js`, and `*.ts` pages
++ [Some components](https://meltdown.dex.yachts/features/components) to get you started `./src/components`
++ [Front matter](https://meltdown.dex.yachts/features/front-matter)
++ Server rendering: [SSR mode](https://meltdown.dex.yachts/features/dynamic-pages)
++ [Static site generation (SSG)](https://meltdown.dex.yachts/features/ssg)
++ [Search](https://meltdown.dex.yachts/features/search) indexer, no need for Algolia, it's built-in
 
-Future & Todo
+Future goals
 
-+ Server-side generation: SSG mode
-+ Error pages
-+ Markdown pages e.g. `./src/pages/about.md` becomes `/about` page
-+ Layouts
-+ Other things inspired by vike, next.js, hexo, hugo, astro, nuxt, etc.
++ Improve base design
++ Improve error pages
++ Incremental SSG
++ Improve search, show sections, headings, excerpts
++ Light & dark mode
++ Automate GH pages & other static services
 
-Collaborators welcome! Join [the imba chat](https://discord.gg/mkcbkRw) and msg `@the_syndrome`.
+Collaborators are welcome. Join [the imba chat](https://discord.gg/mkcbkRw) and msg `@the_syndrome`. File an [issue](https://github.com/the-syndrome/meltdown/issues) if there is a problem.
 
 ## Install
 
@@ -45,10 +51,16 @@ Open <http://127.0.0.1:33765>
 
 ## Guides
 
-+ Setup meltdown <https://meltdown.dex.yachts/setup-meltdown>
-+ Setup pocketbase <https://meltdown.dex.yachts/setup-pocketbase>
-+ Deploy Environment <https://meltdown.dex.yachts/deploy/environment>
-+ Deploy with Docker <https://meltdown.dex.yachts/deploy/docker>
++ [Setup meltdown](https://meltdown.dex.yachts/get-started)
++ [Deploy Environment](https://meltdown.dex.yachts/deploy/environment)
++ [Deploy with Docker](https://meltdown.dex.yachts/deploy/docker)
++ [Deploy with Docker Compose](https://meltdown.dex.yachts/deploy/docker-compose)
+
+### Headless CMS
+
++ [Deploy with Pocketbase](https://meltdown.dex.yachts/deploy/with-pocketbase)
++ [Deploy with Directus](https://meltdown.dex.yachts/deploy/with-directus)
++ [Deploy with Grav](https://meltdown.dex.yachts/deploy/with-grav)
 
 ## Deploy
 
@@ -57,3 +69,8 @@ In production, the default script is usually `npm start`, so we followed that co
 ```sh
 npm start # setup, build, and run server process
 ```
+
+## Troubleshooting
+
++ [meltdown.dex.yachts](https://meltdown.dex.yachts) Troubleshooting section
++ [Community](https://meltdown.dex.yachts) join chat or make issues

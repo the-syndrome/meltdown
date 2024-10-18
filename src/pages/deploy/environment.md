@@ -2,10 +2,13 @@
 title: Deploy Environment
 ---
 
-It's explained in the [setup](https://meltdown.dex.yachts/setup-meltdown) to create the `.env` file. The default variables are:
+It's explained in the [setup](https://meltdown.dex.yachts/get-started) to create the `.env` file. The default variables are:
 
-+ `PORT=33765`, http server port
-+ `POCKETBASE_URL=http://127.0.0.1:8090`, optional, if you're using [pocketbase](https://meltdown.dex.yachts/setup-pocketbase).
-+ `SITE_KEY=meltdown`, optional, if using pocketbase
++ `MELTDOWN_PORT=33765`, http server port
++ `MELTDOWN_HOST=127.0.0.1`, http server port
++ `MELTDOWN_STATE1=iNEmQL`, required, used for initial page state
++ `MELTDOWN_STATE2=JW29a4`, required, used for initial page state
++ `MELTDOWN_SEARCH_INDEX=false`, optional, defaults to `true` for [Search feature](/features/search)
++ `MELTDOWN_SSG=true`, optional, defaults to `false` and is used for the [SSG feature](/features/ssg).
 
 Any others you use are optional. For security purposes, please make sure secrets don't get bundled into `./dist` when you build.

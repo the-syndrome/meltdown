@@ -1,6 +1,5 @@
----
-title: Dynamic data
----
+
+# Dynamic data
 
 Dynamic data is if you need to call out to APIs and get the data in the page. It's built right into the page components with a `static def GET` and works on client and server.
 

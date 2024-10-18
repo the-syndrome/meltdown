@@ -12,8 +12,13 @@ export const isNode =
 	and typeof TextEncoder isnt "undefined"
 	and typeof WebAssembly isnt "undefined"
 
-# this needs help. it bugs out because imba doesn't let you check window
-# the server side emulates some of these also
+###
+
+⚠️ This needs to be more thorough for client side checking.
+
+Until we fix use `not isNode`
+
+###
 export const isBrowser =
 	typeof navigator isnt "undefined"
 	and typeof document isnt "undefined"

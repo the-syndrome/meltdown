@@ -1,6 +1,5 @@
----
-title: Community
----
+
+# Community
 
 Right now, we're congregating in [Imba's discord](https://discord.gg/mkcbkRw) unless they kick us out. If you want to ask questions or help make it better, you're most welcome. You wont hurt our feelings if you think there are improvements that can be made.
 
