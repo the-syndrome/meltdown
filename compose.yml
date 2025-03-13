@@ -1,0 +1,9 @@
+version: "3"
+services:
+  meltdown:
+    build:
+      context: .
+    ports:
+      - 33765:33765
+    volumes:
+      - .:/app
